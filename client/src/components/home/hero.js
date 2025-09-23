@@ -2,7 +2,7 @@
 
 export default function HomeHero() {
   return (
-    <div className="relative z-10 flex mt-36 justify-center min-h-screen">
+    <div className="relative z-10 flex mt-24 px-36 mb-12 justify-center">
       <div className="">
         {/* Main title with underwater lighting effect */}
         <h1 
@@ -11,7 +11,7 @@ export default function HomeHero() {
             color: '#87CEEB',
             textShadow: `
               0 0 10px rgba(135, 206, 235, 0.8),
-              0 0 20px rgba(135, 206, 235, 0.6),
+              0 0 20px rgba(135, 206, 235, 0.6),  
               0 0 40px rgba(135, 206, 235, 0.4),
               0 5px 10px rgba(0, 0, 0, 0.3)
             `,
@@ -24,7 +24,7 @@ export default function HomeHero() {
         
         {/* Subtitle with depth effect */}
         <p 
-          className="text-xl opacity-80 select-none"
+          className="text-xl text-center opacity-80 select-none"  
           style={{ 
             color: '#B0E0E6',
             textShadow: `
