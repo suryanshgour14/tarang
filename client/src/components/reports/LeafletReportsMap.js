@@ -143,8 +143,8 @@ export default function LeafletReportsMap() {
       </div>
 
       {/* Map Instructions */}
-      <div className="text-sm text-gray-400">
-        <p>🗺️ Click on markers to view detailed information about oceanic hazards. Red markers indicate high-risk areas, yellow for medium risk, and blue for low risk.</p>
+      <div className="text-sm text-slate-400 mt-4">
+        <p>Click on markers to view detailed information about oceanic hazards. Red markers indicate high-risk areas, amber for medium risk, and blue for low risk.</p>
       </div>
     </div>
   );

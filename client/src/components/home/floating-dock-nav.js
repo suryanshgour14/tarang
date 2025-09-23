@@ -29,7 +29,7 @@ export default function FloatingDockNav() {
       icon: (
         <IconFileText className="h-full w-full text-cyan-400 hover:text-cyan-300 transition-colors" />
       ),
-      href: "#report-form",
+      href: "/reports",
     },
     {
       title: "Notifications",
