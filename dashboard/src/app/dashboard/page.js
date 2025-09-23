@@ -1,47 +1,88 @@
 'use client';
 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import RegionalHazardChart from '../../components/dashboard/RegionalHazardChart';
 import RequestsFeed from '../../components/dashboard/RequestsFeed';
 import CoastalHeatmap from '../../components/dashboard/CoastalHeatMap';
 import EmergencyAlertPanel from '../../components/dashboard/EmergencyAlertPanel';
+import Sidebar from '../../components/dashboard/Sidebar';
+import IconButton from '../../components/dashboard/IconButton';
+import UserManagementPanel from '../../components/dashboard/UserManagementPanel';
 
 export default function DashboardPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="container mx-auto p-4 space-y-4">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-white">Ocean Hazard Reports</h1>
-        <div className="flex items-center gap-4">
-          <button className="px-4 py-2 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            1W
-          </button>
-          <button className="px-4 py-2 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            1M
-          </button>
-          <button className="px-4 py-2 rounded-md bg-blue-500 text-white">
-            1Y
-          </button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+      <IconButton 
+        isOpen={isSidebarOpen} 
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+      />
+      <Sidebar isOpen={isSidebarOpen} />
+      <motion.main 
+        initial={false}
+        animate={{
+          marginLeft: isSidebarOpen ? '16rem' : '0',
+          paddingLeft: '1rem'
+        }}
+        transition={{ 
+          type: "spring",
+          stiffness: 300,
+          damping: 30
+        }}
+        className="min-h-screen"
+      >
+        <div className="container mx-auto p-4 space-y-4 pt-16 max-w-7xl">
+          <header className="flex justify-between items-center mb-6 sticky top-0 z-10 bg-slate-900/50 backdrop-blur-sm py-4 -mx-4 px-4">
+            <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
+          </header>
 
-      {/* Regional Hazard Chart */}
-      <div className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800">
-        <RegionalHazardChart />
-      </div>
+          <motion.div 
+            layout
+            id="reports" 
+            className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
+          >
+            <RequestsFeed />
+          </motion.div>
 
-      {/* Emergency Alert and Heatmap Container */}
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        <div className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800">
-          <EmergencyAlertPanel />
-        </div>
-        <div className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800">
-          <CoastalHeatmap />
-        </div>
-      </div>
+          <motion.div 
+            layout
+            id="hazard-chart" 
+            className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
+          >
+            <RegionalHazardChart />
+          </motion.div>
 
-      {/* Crowdsourced Reports Section */}
-      <div className="mt-4 bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800">
-        <RequestsFeed />
-      </div>
+          <motion.div 
+            layout
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4"
+          >
+            <motion.div 
+              layout
+              id="emergency-alerts" 
+              className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
+            >
+              <EmergencyAlertPanel />
+            </motion.div>
+            <motion.div 
+              layout
+              id="heatmap" 
+              className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
+            >
+              <CoastalHeatmap />
+            </motion.div>
+          </motion.div>
+
+          <motion.div 
+            layout
+            id="user-management" 
+            className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
+          >
+            <UserManagementPanel />
+          </motion.div>
+        </div>
+      </motion.main>
     </div>
   );
 }
