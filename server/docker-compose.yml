@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  ocean-hazard-api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-100}
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE:-10485760}
+      - ALLOWED_FILE_TYPES=${ALLOWED_FILE_TYPES:-image/jpeg,image/png,image/gif,video/mp4,video/quicktime}
+      - NLP_SERVICE_URL=${NLP_SERVICE_URL:-http://localhost:8000}
+      - NLP_SERVICE_API_KEY=${NLP_SERVICE_API_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: NLP service (if using external service)
+  nlp-service:
+    image: python:3.9-slim
+    ports:
+      - "8000:8000"
+    environment:
+      - NLP_API_KEY=${NLP_SERVICE_API_KEY}
+    volumes:
+      - ./nlp-service:/app
+    working_dir: /app
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+    profiles:
+      - nlp
+
+  # Optional: Redis for caching (if needed)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    profiles:
+      - cache
+
+volumes:
+  redis_data:
