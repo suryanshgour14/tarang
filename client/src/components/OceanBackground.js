@@ -3,105 +3,91 @@
 export default function OceanBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Deep ocean gradient background - much darker */}
+      {/* Deep ocean gradient background */}
       <div 
         className="absolute inset-0"
         style={{
           background: `
             radial-gradient(ellipse at center top, 
-              rgba(20, 40, 70, 0.2) 0%,
-              rgba(12, 25, 45, 0.5) 30%,
-              rgba(6, 15, 30, 0.8) 60%,
-              rgba(3, 8, 20, 0.95) 80%,
-              rgba(1, 3, 12, 1) 100%
+              rgba(45, 95, 145, 0.3) 0%,
+              rgba(25, 60, 100, 0.6) 30%,
+              rgba(15, 35, 65, 0.8) 60%,
+              rgba(8, 20, 40, 0.95) 80%,
+              rgba(3, 10, 25, 1) 100%
             ),
             linear-gradient(180deg,
-              #0a1f35 0%,
-              #061425 40%,
-              #030b15 70%,
-              #01050a 100%
+              #1a4a6b 0%,
+              #0f2942 40%,
+              #081729 70%,
+              #030a19 100%
             )
           `
         }}
       />
       
-      {/* Prominent top center light source */}
+      {/* Light rays from surface */}
       <div 
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-80 h-40 opacity-25"
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 opacity-20"
         style={{
           background: `
-            radial-gradient(ellipse 300px 150px at center top,
-              rgba(120, 160, 200, 0.4) 0%,
-              rgba(80, 120, 160, 0.25) 30%,
-              rgba(50, 90, 130, 0.15) 60%,
-              rgba(30, 60, 100, 0.08) 80%,
+            radial-gradient(ellipse 400px 600px at center top,
+              rgba(135, 206, 235, 0.4) 0%,
+              rgba(100, 180, 220, 0.2) 30%,
+              rgba(70, 150, 200, 0.1) 60%,
               transparent 100%
+            )
+          `,
+          filter: 'blur(2px)'
+        }}
+      />
+      
+      {/* Secondary light rays */}
+      <div 
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-80 opacity-15"
+        style={{
+          background: `
+            conic-gradient(from 180deg at center top,
+              transparent 0deg,
+              rgba(135, 206, 235, 0.3) 30deg,
+              rgba(100, 180, 220, 0.2) 60deg,
+              transparent 90deg,
+              transparent 270deg,
+              rgba(100, 180, 220, 0.2) 300deg,
+              rgba(135, 206, 235, 0.3) 330deg,
+              transparent 360deg
             )
           `,
           filter: 'blur(3px)'
         }}
       />
       
-      {/* Realistic underwater light shafts */}
+      {/* Caustic light patterns */}
       <div 
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 opacity-12"
+        className="absolute top-10 left-1/2 transform -translate-x-1/2 w-80 h-60 opacity-10"
         style={{
           background: `
-            linear-gradient(180deg,
-              rgba(40, 80, 120, 0.2) 0%,
-              rgba(30, 60, 100, 0.15) 20%,
-              rgba(20, 40, 80, 0.1) 50%,
-              rgba(10, 20, 40, 0.05) 80%,
-              transparent 100%
+            repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 10px,
+              rgba(135, 206, 235, 0.1) 10px,
+              rgba(135, 206, 235, 0.1) 20px
             )
           `,
-          filter: 'blur(4px)',
-          clipPath: 'polygon(45% 0%, 55% 0%, 65% 100%, 35% 100%)'
-        }}
-      />
-      
-      {/* Secondary soft light beam */}
-      <div 
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-80 opacity-10"
-        style={{
-          background: `
-            linear-gradient(180deg,
-              rgba(50, 90, 130, 0.12) 0%,
-              rgba(35, 70, 110, 0.08) 30%,
-              rgba(20, 50, 90, 0.04) 60%,
-              transparent 100%
-            )
-          `,
-          filter: 'blur(6px)',
-          clipPath: 'polygon(42% 0%, 58% 0%, 70% 100%, 30% 100%)'
-        }}
-      />
-      
-      {/* Subtle underwater shimmer */}
-      <div 
-        className="absolute top-20 left-1/2 transform -translate-x-1/2 w-40 h-40 opacity-4"
-        style={{
-          background: `
-            radial-gradient(circle,
-              rgba(60, 100, 140, 0.08) 0%,
-              rgba(40, 80, 120, 0.04) 40%,
-              transparent 70%
-            )
-          `,
-          animation: 'gentleShimmer 12s ease-in-out infinite',
-          filter: 'blur(8px)'
+          animation: 'caustics 8s ease-in-out infinite',
+          filter: 'blur(1px)'
         }}
       />
       
       <style jsx>{`
-        @keyframes gentleShimmer {
+        @keyframes caustics {
           0%, 100% { 
-            transform: translateX(-50%) scale(1); 
-            opacity: 0.04; 
+            transform: translateX(-50%) translateY(0px) rotate(0deg); 
+            opacity: 0.1; 
           }
           50% { 
-            transform: translateX(-50%) scale(1.1); 
-            opacity: 0.06; 
+            transform: translateX(-50%) translateY(-20px) rotate(2deg); 
+            opacity: 0.15; 
           }
         }
       `}</style>
