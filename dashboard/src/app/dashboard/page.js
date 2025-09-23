@@ -1,9 +1,9 @@
 'use client';
 
-import RegionalHazardChart from '@/components/dashboard/RegionalHazardChart';
-import RequestsFeed from '@/components/dashboard/RequestsFeed';
-import CoastalHeatmap from '@/components/dashboard/CoastalHeatmap';
-import EmergencyAlertPanel from '@/components/dashboard/EmergencyAlertPanel';
+import RegionalHazardChart from '../../components/dashboard/RegionalHazardChart';
+import RequestsFeed from '../../components/dashboard/RequestsFeed';
+import CoastalHeatmap from '../../components/dashboard/CoastalHeatmap';
+import EmergencyAlertPanel from '../../components/dashboard/EmergencyAlertPanel';
 
 export default function DashboardPage() {
   return (
