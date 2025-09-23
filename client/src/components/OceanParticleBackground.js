@@ -136,6 +136,9 @@ export default function OceanParticleBackground() {
       {/* Additional gradient overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/10 to-blue-950/20 pointer-events-none" />
       
+      {/* Darker overlay for main page */}
+      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+      
       {/* Subtle wave pattern overlay */}
       <div 
         className="absolute inset-0 opacity-5 pointer-events-none"
