@@ -211,6 +211,14 @@ export default function FloatingNav() {
         <div className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/40 backdrop-blur-lg border border-white/20 rounded-xl p-4">
           <div className="flex flex-col space-y-3">
             <Link 
+              href="/reports" 
+              className="text-white/80 hover:text-white transition-colors py-2"
+              style={{ color: '#B0E0E6' }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Reports
+            </Link>
+            <Link 
               href="/about" 
               className="text-white/80 hover:text-white transition-colors py-2"
               style={{ color: '#B0E0E6' }}

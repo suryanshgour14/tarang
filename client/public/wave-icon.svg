@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#40E0D0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#34d4c0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#87CEEB;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Wave 1 - Top wave -->
+  <path d="M2 12c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm8 0c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm8 0c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4z" fill="url(#waveGradient)"/>
+  
+  <!-- Wave 2 - Middle wave -->
+  <path d="M4 16c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm8 0c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm8 0c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4z" fill="url(#waveGradient)"/>
+  
+  <!-- Wave 3 - Bottom wave -->
+  <path d="M6 20c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm8 0c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm8 0c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4z" fill="url(#waveGradient)"/>
+  
+  <!-- Ocean depth indicator -->
+  <circle cx="16" cy="26" r="2" fill="#1e3a8a" opacity="0.6"/>
+</svg>

@@ -9,15 +9,19 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.10",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
     "@supabase/supabase-js": "^2.39.0",
     "@tabler/icons-react": "^3.35.0",
     "clsx": "^2.1.1",
+    "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0",
     "motion": "^12.23.19",
     "next": "15.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-leaflet": "^4.2.1",
     "tailwind-merge": "^3.3.1",
     "three": "^0.180.0",
     "three-globe": "^2.44.0"

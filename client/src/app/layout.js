@@ -15,13 +15,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Tarang",
-  description: "Tarang",
+  title: "Tarang - Oceanic Hazard Reports",
+  description: "Real-time visualization of oceanic hazards including tsunamis, cyclones, storm surges, and coastal flooding. Monitor environmental threats and enhance community safety.",
+  icons: {
+    icon: '/wave-icon.svg',
+    shortcut: '/wave-icon.svg',
+    apple: '/wave-icon.svg',
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/wave-icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/wave-icon.svg" />
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyQFzV90Gne0SahKWvo1a0_scsUhMhUpM&libraries=visualization"
+          async
+          defer
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
