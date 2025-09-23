@@ -5,6 +5,8 @@ import Link from 'next/link';
 
 export default function FloatingNav() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [notifications] = useState(3); // Example notification count
 
   return (
     <nav 
@@ -92,36 +94,51 @@ export default function FloatingNav() {
             </>
           ) : (
             <>
-              {/* Upload Button */}
-              <button 
-                className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:scale-110"
-                style={{
-                  background: 'rgba(64, 224, 208, 0.2)',
-                  border: '1px solid rgba(64, 224, 208, 0.4)',
-                  color: '#40E0D0',
-                  boxShadow: '0 0 10px rgba(64, 224, 208, 0.3)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(64, 224, 208, 0.3)';
-                  e.target.style.boxShadow = '0 0 15px rgba(64, 224, 208, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'rgba(64, 224, 208, 0.2)';
-                  e.target.style.boxShadow = '0 0 10px rgba(64, 224, 208, 0.3)';
-                }}
-                title="Upload"
-              >
-                {/* Upload Icon SVG */}
-                <svg 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="currentColor"
+              {/* Notification Button */}
+              <div className="relative">
+                <button 
+                  className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:scale-110"
+                  style={{
+                    background: 'rgba(64, 224, 208, 0.2)',
+                    border: '1px solid rgba(64, 224, 208, 0.4)',
+                    color: '#40E0D0',
+                    boxShadow: '0 0 10px rgba(64, 224, 208, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(64, 224, 208, 0.3)';
+                    e.target.style.boxShadow = '0 0 15px rgba(64, 224, 208, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'rgba(64, 224, 208, 0.2)';
+                    e.target.style.boxShadow = '0 0 10px rgba(64, 224, 208, 0.3)';
+                  }}
+                  title="Notifications"
                 >
-                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-                  <path d="M12,11L16,15H13V19H11V15H8L12,11Z" />
-                </svg>
-              </button>
+                  {/* Notification Bell Icon SVG */}
+                  <svg 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="currentColor"
+                  >
+                    <path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21" />
+                  </svg>
+                </button>
+                
+                {/* Notification Badge */}
+                {notifications > 0 && (
+                  <span 
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={{
+                      background: '#ff6b6b',
+                      color: 'white',
+                      fontSize: '10px'
+                    }}
+                  >
+                    {notifications > 9 ? '9+' : notifications}
+                  </span>
+                )}
+              </div>
               
               {/* Profile Circle */}
               <div 
@@ -140,17 +157,98 @@ export default function FloatingNav() {
         </div>
       </div>
 
-      {/* Mobile menu indicator */}
+      {/* Mobile menu button - only show on mobile */}
       <div className="md:hidden absolute right-4 top-1/2 transform -translate-y-1/2">
         <button 
-          className="w-6 h-6 flex flex-col justify-center items-center space-y-1"
+          className="w-8 h-8 flex flex-col justify-center items-center space-y-1"
           style={{ color: '#B0E0E6' }}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          <div className="w-4 h-0.5 bg-current rounded"></div>
-          <div className="w-4 h-0.5 bg-current rounded"></div>
-          <div className="w-4 h-0.5 bg-current rounded"></div>
+          {isMobileMenuOpen ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+            </svg>
+          ) : (
+            <>
+              <div className="w-4 h-0.5 bg-current rounded"></div>
+              <div className="w-4 h-0.5 bg-current rounded"></div>
+              <div className="w-4 h-0.5 bg-current rounded"></div>
+            </>
+          )}
         </button>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/40 backdrop-blur-lg border border-white/20 rounded-xl p-4">
+          <div className="flex flex-col space-y-3">
+            <Link 
+              href="/about" 
+              className="text-white/80 hover:text-white transition-colors py-2"
+              style={{ color: '#B0E0E6' }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              About
+            </Link>
+            <Link 
+              href="/contact" 
+              className="text-white/80 hover:text-white transition-colors py-2"
+              style={{ color: '#B0E0E6' }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Contact
+            </Link>
+            
+            {!isLoggedIn ? (
+              <div className="flex flex-col space-y-2 pt-2 border-t border-white/20">
+                <button 
+                  className="text-left text-sm font-medium px-3 py-2 rounded-full transition-all duration-300"
+                  style={{
+                    color: '#B0E0E6',
+                    border: '1px solid rgba(176, 224, 230, 0.3)',
+                  }}
+                  onClick={() => {
+                    setIsLoggedIn(!isLoggedIn);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Login
+                </button>
+                <button 
+                  className="text-sm font-medium px-3 py-2 rounded-full transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, #40E0D0, #87CEEB)',
+                    color: '#0f2942',
+                    boxShadow: '0 2px 8px rgba(64, 224, 208, 0.3)'
+                  }}
+                  onClick={() => {
+                    setIsLoggedIn(!isLoggedIn);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Sign Up
+                </button>
+              </div>
+            ) : (
+              <div className="pt-2 border-t border-white/20">
+                <button 
+                  className="text-left text-sm font-medium px-3 py-2 rounded-full transition-all duration-300"
+                  style={{
+                    color: '#B0E0E6',
+                    border: '1px solid rgba(176, 224, 230, 0.3)',
+                  }}
+                  onClick={() => {
+                    setIsLoggedIn(!isLoggedIn);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Profile
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

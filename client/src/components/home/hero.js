@@ -2,40 +2,28 @@
 
 export default function HomeHero() {
   return (
-    <div className="relative z-10 flex mt-24 px-36 mb-12 justify-center">
+    <div className="relative z-10 flex mt-38 px-36 mb-12 justify-center">
       <div className="">
-        {/* Main title with underwater lighting effect */}
+        {/* Main tagline as primary text */}
         <h1 
-          className="text-8xl font-bold mb-6 select-none"
+          className="text-6xl font-bold text-center select-none"  
           style={{ 
             color: '#87CEEB',
+            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            fontWeight: '800',
+            letterSpacing: '-0.01em',
             textShadow: `
-              0 0 10px rgba(135, 206, 235, 0.8),
-              0 0 20px rgba(135, 206, 235, 0.6),  
-              0 0 40px rgba(135, 206, 235, 0.4),
-              0 5px 10px rgba(0, 0, 0, 0.3)
+              0 0 15px rgba(135, 206, 235, 0.8),
+              0 0 25px rgba(135, 206, 235, 0.6),  
+              0 0 35px rgba(135, 206, 235, 0.4),
+              0 6px 12px rgba(0, 0, 0, 0.4)
             `,
             animation: 'underwaterGlow 4s ease-in-out infinite alternate',
-            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
+            filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3))'
           }}
         >
-          Tarang
+          Safer Seas, Smarter Shores
         </h1>
-        
-        {/* Subtitle with depth effect */}
-        <p 
-          className="text-xl text-center opacity-80 select-none"  
-          style={{ 
-            color: '#B0E0E6',
-            textShadow: `
-              0 0 5px rgba(176, 224, 230, 0.6),
-              0 2px 4px rgba(0, 0, 0, 0.4)
-            `,
-            animation: 'subtleFloat 6s ease-in-out infinite'
-          }}
-        >
-          Safer Seas, Smarter Shores.
-        </p>
       </div>
   
       <style jsx>{`
