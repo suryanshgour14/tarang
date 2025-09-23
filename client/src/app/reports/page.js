@@ -5,12 +5,12 @@ import dynamic from 'next/dynamic';
 import OceanParticleBackground from '@/components/OceanParticleBackground';
 import apiService from '@/lib/api';
 
-// Dynamically import the heatmap component to avoid SSR issues
-const OceanHazardHeatmap = dynamic(() => import('@/components/reports/OceanHazardHeatmap'), {
+// Dynamically import the Leaflet map component to avoid SSR issues
+const LeafletReportsMap = dynamic(() => import('@/components/reports/LeafletReportsMap'), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-96">
-      <div className="text-white text-lg">Loading heatmap...</div>
+      <div className="text-white text-lg">Loading map...</div>
     </div>
   )
 });
@@ -100,23 +100,22 @@ export default function ReportsPage() {
             </div>
           </div>
 
-          {/* Heatmap Section */}
+          {/* Map Section */}
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">Oceanic Hazard Heatmap</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">Oceanic Hazard Map</h2>
               <p className="text-blue-200">
-                Interactive Google Maps visualization showing oceanic hazards including tsunamis, cyclones, 
-                storm surges, and coastal flooding. Darker areas indicate higher risk concentrations. 
-                Satellite view provides detailed coastal imagery for critical hazard analysis.
+                Interactive map showing real-time oceanic hazard reports including tsunamis, cyclones, 
+                storm surges, and coastal flooding. Click on markers to view detailed information about each hazard.
               </p>
               <div className="mt-2 flex items-center space-x-4 text-sm text-blue-300">
-                <span>🌊 Tsunami & Cyclone Risk</span>
-                <span>🌊 Coastal Flooding Zones</span>
-                <span>🔥 Real-time hazard visualization</span>
+                <span>🌊 Tsunami & Cyclone Alerts</span>
+                <span>🌊 Storm Surge Warnings</span>
+                <span>🔥 Real-time hazard tracking</span>
               </div>
             </div>
             
-            <OceanHazardHeatmap />
+            <LeafletReportsMap />
           </div>
 
           {/* Additional Info */}

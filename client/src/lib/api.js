@@ -55,19 +55,11 @@ class ApiService {
     });
   }
 
-  async getHeatmapData(filters = {}) {
-    const queryParams = new URLSearchParams(filters).toString();
-    const endpoint = `/reports/heatmap${queryParams ? `?${queryParams}` : ''}`;
-    return this.request(endpoint);
-  }
 
   async getReportStats() {
     return this.request('/reports/stats');
   }
 
-  async getReportsByGeohash(precision = 6) {
-    return this.request(`/reports/geohash?precision=${precision}`);
-  }
 
   // Auth API
   async register(userData) {

@@ -31,10 +31,11 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/wave-icon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/wave-icon.svg" />
-        <script
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyQFzV90Gne0SahKWvo1a0_scsUhMhUpM&libraries=visualization"
-          async
-          defer
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossOrigin=""
         />
       </head>
       <body
