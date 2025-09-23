@@ -3,6 +3,7 @@ import HomeHero from '@/components/home/hero';
 import { GlobeDemo } from '@/components/home/globe-section';
 import OceanParticleBackground from '@/components/OceanParticleBackground';
 import ReportForm from '@/components/home/report-form';
+import SafetyGuidelines from '@/components/home/safety-guidelines';
 
 export default function Home() {
   return (
@@ -23,8 +24,13 @@ export default function Home() {
         </div>
 
         {/* Report Form section */}
-        <div className="flex justify-center py-20">
+        <div id="report-form" className="flex justify-center py-20">
           <ReportForm />
+        </div>
+
+        {/* Safety Guidelines section */}
+        <div className="py-20">
+          <SafetyGuidelines />
         </div>
 
       </div>

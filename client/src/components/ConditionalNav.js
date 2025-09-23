@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import FloatingNav from '@/components/home/floating-nav'
+import FloatingDockNav from '@/components/home/floating-dock-nav'
 
 export default function ConditionalNav() {
   const pathname = usePathname()
@@ -11,5 +11,5 @@ export default function ConditionalNav() {
     return null
   }
   
-  return <FloatingNav />
+  return <FloatingDockNav />
 }
