@@ -2,8 +2,8 @@
 
 export default function HomeHero() {
   return (
-    <div className="relative z-10 flex items-center justify-center min-h-screen">
-      <div className="text-center">
+    <div className="relative z-10 flex mt-36 justify-center min-h-screen">
+      <div className="">
         {/* Main title with underwater lighting effect */}
         <h1 
           className="text-8xl font-bold mb-6 select-none"
@@ -19,7 +19,7 @@ export default function HomeHero() {
             filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
           }}
         >
-          Hi Tarang
+          Tarang
         </h1>
         
         {/* Subtitle with depth effect */}
@@ -34,21 +34,10 @@ export default function HomeHero() {
             animation: 'subtleFloat 6s ease-in-out infinite'
           }}
         >
-          Exploring the depths of the digital ocean
+          Safer Seas, Smarter Shores.
         </p>
-        
-        {/* Depth indicator */}
-        <div 
-          className="mt-8 text-sm opacity-60 font-mono"
-          style={{ 
-            color: '#4682B4',
-            textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
-          }}
-        >
-          Depth: 2,847 meters
-        </div>
       </div>
-      
+  
       <style jsx>{`
         @keyframes underwaterGlow {
           0% { 
