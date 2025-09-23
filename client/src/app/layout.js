@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FloatingNav from '@/components/home/floating-nav';
+import { AuthProvider } from '@/contexts/AuthContext';
+import ConditionalNav from '@/components/ConditionalNav';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,12 +25,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="min-h-screen relative overflow-hidden">
-          {/* Floating Navigation - Global */}
-          <FloatingNav />
-          
-          {children}
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen relative overflow-hidden">
+            {/* Conditional Navigation - Only show on non-auth pages */}
+            <ConditionalNav />
+            
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

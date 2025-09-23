@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function FloatingNav() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isAuthenticated, user, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notifications] = useState(3); // Example notification count
 
@@ -49,7 +50,7 @@ export default function FloatingNav() {
 
         {/* Auth Section */}
         <div className="flex items-center space-x-3">
-          {!isLoggedIn ? (
+          {!isAuthenticated ? (
             <>
               <button 
                 className="text-sm font-medium px-3 py-1.5 rounded-full transition-all duration-300 hover:scale-105"
@@ -68,7 +69,9 @@ export default function FloatingNav() {
                   e.target.style.borderColor = 'rgba(176, 224, 230, 0.3)';
                   e.target.style.boxShadow = 'none';
                 }}
-                onClick={() => setIsLoggedIn(!isLoggedIn)}
+                onClick={() => {
+                  window.location.href = '/auth';
+                }}
               >
                 Login
               </button>
@@ -87,7 +90,9 @@ export default function FloatingNav() {
                   e.target.style.boxShadow = '0 2px 8px rgba(64, 224, 208, 0.3)';
                   e.target.style.transform = 'scale(1)';
                 }}
-                onClick={() => setIsLoggedIn(!isLoggedIn)}
+                onClick={() => {
+                  window.location.href = '/auth?mode=signup';
+                }}
               >
                 Sign Up
               </button>
@@ -142,16 +147,39 @@ export default function FloatingNav() {
               
               {/* Profile Circle */}
               <div 
-                className="w-8 h-8 rounded-full cursor-pointer transition-all duration-300 hover:scale-110"
+                className="w-8 h-8 rounded-full cursor-pointer transition-all duration-300 hover:scale-110 overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, #40E0D0, #87CEEB)',
+                  background: user?.user_metadata?.avatar_url || user?.user_metadata?.picture 
+                    ? 'none' 
+                    : 'linear-gradient(135deg, #40E0D0, #87CEEB)',
                   boxShadow: '0 0 15px rgba(64, 224, 208, 0.4)',
-                  backgroundImage: 'url("data:image/svg+xml,%3csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3e%3ccircle cx=\'50\' cy=\'35\' r=\'15\' fill=\'%230f2942\'/%3e%3cpath d=\'M20 75 Q50 60 80 75 Q50 90 20 75\' fill=\'%230f2942\'/%3e%3c/svg%3e")',
-                  backgroundSize: 'cover'
+                  backgroundImage: user?.user_metadata?.avatar_url || user?.user_metadata?.picture
+                    ? `url("${user.user_metadata.avatar_url || user.user_metadata.picture}")`
+                    : 'url("data:image/svg+xml,%3csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3e%3ccircle cx=\'50\' cy=\'35\' r=\'15\' fill=\'%230f2942\'/%3e%3cpath d=\'M20 75 Q50 60 80 75 Q50 90 20 75\' fill=\'%230f2942\'/%3e%3c/svg%3e")',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
                 }}
-                onClick={() => setIsLoggedIn(!isLoggedIn)}
-                title="Profile"
-              />
+                onClick={() => window.location.href = '/account'}
+                title="Account Settings"
+              >
+                {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                  <img 
+                    src={user.user_metadata.avatar_url || user.user_metadata.picture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to initials if image fails to load
+                      e.target.style.display = 'none'
+                      e.target.parentElement.style.background = 'linear-gradient(135deg, #40E0D0, #87CEEB)'
+                      e.target.parentElement.style.backgroundImage = 'url("data:image/svg+xml,%3csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3e%3ccircle cx=\'50\' cy=\'35\' r=\'15\' fill=\'%230f2942\'/%3e%3cpath d=\'M20 75 Q50 60 80 75 Q50 90 20 75\' fill=\'%230f2942\'/%3e%3c/svg%3e")'
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-sm font-bold" style={{ color: '#0f2942' }}>
+                    {user?.user_metadata?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>
@@ -199,7 +227,7 @@ export default function FloatingNav() {
               Contact
             </Link>
             
-            {!isLoggedIn ? (
+            {!isAuthenticated ? (
               <div className="flex flex-col space-y-2 pt-2 border-t border-white/20">
                 <button 
                   className="text-left text-sm font-medium px-3 py-2 rounded-full transition-all duration-300"
@@ -208,7 +236,7 @@ export default function FloatingNav() {
                     border: '1px solid rgba(176, 224, 230, 0.3)',
                   }}
                   onClick={() => {
-                    setIsLoggedIn(!isLoggedIn);
+                    window.location.href = '/auth';
                     setIsMobileMenuOpen(false);
                   }}
                 >
@@ -222,7 +250,7 @@ export default function FloatingNav() {
                     boxShadow: '0 2px 8px rgba(64, 224, 208, 0.3)'
                   }}
                   onClick={() => {
-                    setIsLoggedIn(!isLoggedIn);
+                    window.location.href = '/auth?mode=signup';
                     setIsMobileMenuOpen(false);
                   }}
                 >
@@ -231,6 +259,58 @@ export default function FloatingNav() {
               </div>
             ) : (
               <div className="pt-2 border-t border-white/20">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div 
+                    className="w-10 h-10 rounded-full overflow-hidden"
+                    style={{
+                      background: user?.user_metadata?.avatar_url || user?.user_metadata?.picture 
+                        ? 'none' 
+                        : 'linear-gradient(135deg, #40E0D0, #87CEEB)',
+                      backgroundImage: user?.user_metadata?.avatar_url || user?.user_metadata?.picture
+                        ? `url("${user.user_metadata.avatar_url || user.user_metadata.picture}")`
+                        : 'none',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  >
+                    {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                      <img 
+                        src={user.user_metadata.avatar_url || user.user_metadata.picture}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                          e.target.parentElement.style.background = 'linear-gradient(135deg, #40E0D0, #87CEEB)'
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-sm font-bold" style={{ color: '#0f2942' }}>
+                        {user?.user_metadata?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="text-sm text-slate-300">
+                      Welcome, {user?.user_metadata?.name || user?.email}
+                    </div>
+                    <div className="text-xs text-slate-400 capitalize">
+                      {user?.user_metadata?.role || 'Citizen Reporter'}
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  className="text-left text-sm font-medium px-3 py-2 rounded-full transition-all duration-300 mb-2"
+                  style={{
+                    color: '#B0E0E6',
+                    border: '1px solid rgba(176, 224, 230, 0.3)',
+                  }}
+                  onClick={() => {
+                    window.location.href = '/account';
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Account Settings
+                </button>
                 <button 
                   className="text-left text-sm font-medium px-3 py-2 rounded-full transition-all duration-300"
                   style={{
@@ -238,11 +318,11 @@ export default function FloatingNav() {
                     border: '1px solid rgba(176, 224, 230, 0.3)',
                   }}
                   onClick={() => {
-                    setIsLoggedIn(!isLoggedIn);
+                    signOut();
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  Profile
+                  Sign Out
                 </button>
               </div>
             )}
