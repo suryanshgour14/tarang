@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import FloatingNav from '@/components/home/floating-nav';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +24,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="min-h-screen relative overflow-hidden">
+          {/* Floating Navigation - Global */}
+          <FloatingNav />
+          
           {children}
         </div>
       </body>
