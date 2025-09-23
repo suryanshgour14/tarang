@@ -2,7 +2,7 @@
 
 import RegionalHazardChart from '../../components/dashboard/RegionalHazardChart';
 import RequestsFeed from '../../components/dashboard/RequestsFeed';
-import CoastalHeatmap from '../../components/dashboard/CoastalHeatmap';
+import CoastalHeatmap from '../../components/dashboard/CoastalHeatMap';
 import EmergencyAlertPanel from '../../components/dashboard/EmergencyAlertPanel';
 
 export default function DashboardPage() {
