@@ -9,7 +9,7 @@ const demoRequests = [
     id: 1,
     location: 'Chennai Beach, Tamil Nadu',
     description: 'Unusual high tide observed with strong waves',
-    image: '/demo/wave1.jpg', // Replace with your image path
+    image: 'https://media.istockphoto.com/id/476044242/photo/sunrise-on-beach.jpg?s=612x612&w=0&k=20&c=wye8Ryn31nrmMT6DBzQ2BncW9PHvVkU7jjmUhFIdVNU=', // Replace with your image path
     timestamp: '2024-02-20T10:30:00Z',
     status: 'pending',
     coordinates: { lat: 13.0827, lng: 80.2707 }
@@ -18,7 +18,7 @@ const demoRequests = [
     id: 2,
     location: 'Kovalam Beach, Kerala',
     description: 'Coastal erosion spotted, beach line receding rapidly',
-    image: '/demo/erosion.jpg', // Replace with your image path
+    image: 'https://t4.ftcdn.net/jpg/05/58/87/41/360_F_558874150_UBXtzzXkvbVgno5GYNAftE3BT9B6mqV9.jpg', // Replace with your image path
     timestamp: '2024-02-20T09:15:00Z',
     status: 'pending',
     coordinates: { lat: 8.4004, lng: 76.9787 }
@@ -27,7 +27,7 @@ const demoRequests = [
     id: 3,
     location: 'Marina Beach, Tamil Nadu',
     description: 'Large amount of plastic waste washed ashore after storm',
-    image: '/demo/waste.jpg', // Replace with your image path
+    image: 'https://images.firstpost.com/wp-content/uploads/2018/09/marinabeach380.jpg', // Replace with your image path
     timestamp: '2024-02-20T08:45:00Z',
     status: 'pending',
     coordinates: { lat: 13.0500, lng: 80.2824 }
@@ -36,7 +36,7 @@ const demoRequests = [
     id: 4,
     location: 'Visakhapatnam Beach, Andhra Pradesh',
     description: 'Oil spill observed near fishing harbor, urgent attention needed',
-    image: '/demo/spill.jpg', // Replace with your image path
+    image: 'https://media-cdn.tripadvisor.com/media/photo-s/0d/56/77/e3/the-beach-at-night.jpg', // Replace with your image path
     timestamp: '2024-02-20T07:30:00Z',
     status: 'pending',
     coordinates: { lat: 17.7292, lng: 83.3046 }
@@ -45,7 +45,7 @@ const demoRequests = [
     id: 5,
     location: 'Puri Beach, Odisha',
     description: 'Sudden changes in wave patterns noticed, potential rip current formation',
-    image: '/demo/waves.jpg',
+    image: 'https://media.istockphoto.com/id/1463637569/photo/puri-sea-beach-during-holiday-season-with-crowd-of-tourists-enjoying-beach-time-at-puri.jpg?s=612x612&w=0&k=20&c=YWTzQS9xHckWZlTU8W4dG2P2pER8gn1MVlHYWYOmQ88=',
     timestamp: '2024-02-20T06:15:00Z',
     status: 'pending',
     coordinates: { lat: 19.8134, lng: 85.8312 }
@@ -54,7 +54,7 @@ const demoRequests = [
     id: 6,
     location: 'Goa Calangute Beach',
     description: 'Red tide phenomenon observed, water color changed significantly',
-    image: '/demo/redtide.jpg',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfX7yW7MV5rUGo4LFs_hm3FXkfHTbCqh81ag&s',
     timestamp: '2024-02-20T05:45:00Z',
     status: 'pending',
     coordinates: { lat: 15.5439, lng: 73.7527 }
@@ -63,7 +63,7 @@ const demoRequests = [
     id: 7,
     location: 'Kanyakumari Coast',
     description: 'Multiple fishing nets damaged due to unexpected strong currents',
-    image: '/demo/nets.jpg',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfX7yW7MV5rUGo4LFs_hm3FXkfHTbCqh81ag&s',
     timestamp: '2024-02-20T04:30:00Z',
     status: 'pending',
     coordinates: { lat: 8.0883, lng: 77.5385 }
@@ -72,7 +72,7 @@ const demoRequests = [
     id: 8,
     location: 'Digha Beach, West Bengal',
     description: 'Unusual sea foam accumulation along the shoreline',
-    image: '/demo/foam.jpg',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzTGZNw0rVOJvTWezGldnbcrCcGSKyo8-NAQ&s',
     timestamp: '2024-02-20T03:15:00Z',
     status: 'pending',
     coordinates: { lat: 21.6238, lng: 87.5055 }

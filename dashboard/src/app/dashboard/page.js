@@ -9,6 +9,7 @@ import EmergencyAlertPanel from '../../components/dashboard/EmergencyAlertPanel'
 import Sidebar from '../../components/dashboard/Sidebar';
 import IconButton from '../../components/dashboard/IconButton';
 import UserManagementPanel from '../../components/dashboard/UserManagementPanel';
+import WebScrapedDataPanel from '../../components/dashboard/WebScrapedDataPanel';
 
 export default function DashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -80,6 +81,14 @@ export default function DashboardPage() {
             className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
           >
             <UserManagementPanel />
+          </motion.div>
+
+          <motion.div 
+            layout
+            id="webscrapped-data" 
+            className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 scroll-mt-16"
+          >
+            <WebScrapedDataPanel />
           </motion.div>
         </div>
       </motion.main>
