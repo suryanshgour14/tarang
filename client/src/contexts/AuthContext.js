@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import apiService from '@/lib/api'
 
 const AuthContext = createContext({})
 
@@ -37,6 +38,15 @@ export const AuthProvider = ({ children }) => {
         if (session?.user) {
           setUser(session.user)
           setIsAuthenticated(true)
+          
+          // Sync OAuth users to custom users table
+          if (event === 'SIGNED_IN' && session.user.app_metadata?.provider === 'google') {
+            try {
+              await syncOAuthUserToDatabase(session.user)
+            } catch (error) {
+              console.error('Failed to sync OAuth user:', error)
+            }
+          }
         } else {
           setUser(null)
           setIsAuthenticated(false)
@@ -101,6 +111,23 @@ export const AuthProvider = ({ children }) => {
       if (error) throw error
     } catch (error) {
       console.error('Error signing out:', error)
+    }
+  }
+
+  // Function to sync OAuth user to custom users table
+  const syncOAuthUserToDatabase = async (authUser) => {
+    try {
+      const result = await apiService.syncOAuthUser({
+        id: authUser.id,
+        email: authUser.email,
+        user_metadata: authUser.user_metadata,
+        app_metadata: authUser.app_metadata
+      })
+      
+      console.log('OAuth user synced successfully:', result)
+    } catch (error) {
+      console.error('Error syncing OAuth user:', error)
+      throw error
     }
   }
 

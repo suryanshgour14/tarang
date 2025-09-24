@@ -87,6 +87,13 @@ class ApiService {
       body: JSON.stringify(userData),
     });
   }
+
+  async syncOAuthUser(authUser) {
+    return this.request('/users/sync-oauth', {
+      method: 'POST',
+      body: JSON.stringify({ authUser }),
+    });
+  }
 }
 
 // Create a singleton instance

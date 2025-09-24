@@ -7,6 +7,7 @@ import {
   updateUserById,
   deleteUserById,
   verifyUserEmail,
+  syncOAuthUser,
   validateGetUsers
 } from '../controllers/userController';
 import { 
@@ -216,5 +217,35 @@ router.post('/:userId/verify',
   requireOfficial, 
   verifyUserEmail
 );
+
+/**
+ * @swagger
+ * /users/sync-oauth:
+ *   post:
+ *     summary: Sync OAuth user to custom users table
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               authUser:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   user_metadata:
+ *                     type: object
+ *     responses:
+ *       200:
+ *         description: OAuth user synced successfully
+ *       400:
+ *         description: Invalid request data
+ */
+router.post('/sync-oauth', syncOAuthUser);
 
 export default router;

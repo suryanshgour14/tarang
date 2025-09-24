@@ -179,6 +179,34 @@ export const verifyUserEmail = async (req: Request, res: Response, next: NextFun
   }
 };
 
+/**
+ * Sync OAuth user to custom users table
+ */
+export const syncOAuthUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { authUser } = req.body;
+    
+    if (!authUser || !authUser.id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Auth user data is required',
+      });
+    }
+    
+    const user = await UserService.syncOAuthUser(authUser);
+    
+    logger.info('OAuth user synced successfully:', { userId: user.id, email: user.email });
+    
+    res.json({
+      success: true,
+      data: user,
+      message: 'OAuth user synced successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Export validation middleware
 export const validateRegisterUser = validateBody(CreateUserSchema);
 export const validateGetUsers = validateQuery(GetUsersQuerySchema);

@@ -242,4 +242,52 @@ export class UserService {
       throw new AppError('Failed to verify user email');
     }
   }
+
+  /**
+   * Sync OAuth user to custom users table
+   * This is called when a user signs in with OAuth providers like Google
+   */
+  static async syncOAuthUser(authUser: any): Promise<User> {
+    try {
+      // Check if user already exists in our custom table
+      const { data: existingUser, error: checkError } = await supabaseAdmin
+        .from('users')
+        .select('*')
+        .eq('id', authUser.id)
+        .single();
+
+      if (existingUser) {
+        // User exists, return the existing user
+        return existingUser as User;
+      }
+
+      // User doesn't exist in our table, create them
+      const userData = {
+        id: authUser.id,
+        name: authUser.user_metadata?.name || authUser.user_metadata?.full_name || authUser.email?.split('@')[0] || 'User',
+        email: authUser.email,
+        role: authUser.user_metadata?.role || 'citizen',
+      };
+
+      const { data: user, error: dbError } = await supabaseAdmin
+        .from('users')
+        .insert(userData)
+        .select()
+        .single();
+
+      if (dbError || !user) {
+        logger.error('Failed to sync OAuth user to database:', dbError);
+        throw new AppError('Failed to sync user to database');
+      }
+
+      logger.info('OAuth user synced successfully:', { userId: user.id, email: user.email });
+      return user as User;
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+      logger.error('Error syncing OAuth user:', error);
+      throw new AppError('Failed to sync OAuth user');
+    }
+  }
 }
