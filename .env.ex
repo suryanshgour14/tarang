@@ -1,0 +1,13 @@
+NEWS_API_KEY="171a9d6e9aa347b9bde5baf51d6a8747"
+NASA_API_KEY="YlyoSSdFN7h909uwolJrjXbRpXCKwHVdA2gx5A24"
+SUPABASE_URL="https://qqggoiysyjnwuyvzwrrr.supabase.co"
+SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxZ2dvaXlzeWpud3V5dnp3cnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2MDcxMTksImV4cCI6MjA3NDE4MzExOX0.PhNKPRbx-HKcRiIWoweA3FBXH2NL3beZ3ysQCDP878Y"
+SUPABASE_SERVICE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxZ2dvaXlzeWpud3V5dnp3cnJyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODYwNzExOSwiZXhwIjoyMDc0MTgzMTE5fQ.8Yt3hakWkFCB-RrAbGLw7ir0eFrgJFvVQHwym1ejWkg"
+
+# Google Maps API Key (for geotag.py)
+GOOGLE_MAPS_API_KEY="AIzaSyAyQFzV90Gne0SahKWvo1a0_scsUhMhUpM"
+# Folder for local temporary storage (for geotag.py)
+UPLOAD_FOLDER="uploads"
+MAX_FILE_SIZE=16777216  # 16 MB
+
+
