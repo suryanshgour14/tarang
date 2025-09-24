@@ -35,3 +35,17 @@ coverage/
 # Misc
 *.local
 *.cache
+
+# Next.js build directories
+.next/
+**/.next/
+
+# Client and Dashboard specific Next.js build directories
+client/.next/
+dashboard/.next/
+
+# Build output directories
+client/out/
+client/build/
+dashboard/out/
+dashboard/build/
