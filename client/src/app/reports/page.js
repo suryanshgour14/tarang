@@ -150,13 +150,14 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen flex flex-col">
       {/* Ocean Particle Background */}
       <OceanParticleBackground />
       
-      {/* Content overlay */}
-      <div className="relative z-10 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 py-20">
+      {/* Main Content */}
+      <div className="relative z-10 flex-1 flex flex-col">
+        <div className="flex-1">
+          <div className="max-w-7xl mx-auto px-4 py-20">
           {/* Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 bg-clip-text text-transparent mb-6">
@@ -292,6 +293,18 @@ export default function ReportsPage() {
           </div>
           <div className="flex justify-center">
             <ReportForm />
+          </div>
+          </div>
+        </div>
+        
+        {/* Footer - positioned at bottom */}
+        <div className="relative z-10 mb-20">
+          <div className="max-w-7xl mx-auto px-4">
+            <hr className="border-t border-slate-700/50 mb-4" />
+            <div className="flex justify-between items-center text-sm text-slate-500">
+              <span>Ministry of Earth Sciences (MoES)</span>
+              <span>Made by : Team Tarang</span>
+            </div>
           </div>
         </div>
       </div>

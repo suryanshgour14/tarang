@@ -395,9 +395,9 @@ export function GlobeDemo() {
   ];
 
   return (
-    <div className="flex flex-row py-7 justify-center h-screen md:h-auto relative w-full">
+    <div className="flex flex-row py-2 md:py-7 justify-center h-auto md:h-auto relative w-full">
       <div
-        className="max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
+        className="max-w-7xl mx-auto w-full relative overflow-hidden h-72 md:h-[40rem] px-4">
         <div
           className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-transparent z-40" />
         <div className="absolute w-full h-72 md:h-full z-10">

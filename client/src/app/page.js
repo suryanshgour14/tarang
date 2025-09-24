@@ -14,12 +14,12 @@ export default function Home() {
     router.push('/reports');
   };
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen flex flex-col">
       {/* Ocean Particle Background */}
       <OceanParticleBackground />
       
-      {/* Content overlay */}
-      <div className="relative z-10 min-h-screen flex flex-col">
+      {/* Main Content */}
+      <div className="relative z-10 flex-1 flex flex-col">
         {/* Main content with underwater lighting */}
         <div className="flex-1 flex items-center justify-center">
           <HomeHero />
@@ -97,8 +97,19 @@ export default function Home() {
         <div className="py-20">
           <SafetyGuidelines />
         </div>
-
       </div>
+
+      {/* Footer - positioned at bottom */}
+      <div className="relative z-10 pb-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <hr className="border-t border-slate-700/50 mb-4" />
+          <div className="flex justify-between items-center text-sm text-slate-500">
+            <span>Ministry of Earth Sciences (MoES)</span>
+            <span>Made by : Team Tarang</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
