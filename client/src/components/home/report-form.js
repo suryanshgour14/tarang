@@ -13,6 +13,8 @@ export default function ReportForm() {
   const [isCameraActive, setIsCameraActive] = useState(false)
   const [capturedImage, setCapturedImage] = useState(null)
   const [stream, setStream] = useState(null)
+  const [cameraError, setCameraError] = useState(null)
+  const [isLoadingCamera, setIsLoadingCamera] = useState(false)
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   
@@ -20,14 +22,14 @@ export default function ReportForm() {
   const [userId, setUserId] = useState('') // Replace with actual user ID from your auth system
   
   // API endpoints
-const LIVE_CAPTURE_API = 'http://127.0.0.1:8000/reports/submit/live_capture' // Replace with your actual API URL
-const FILE_UPLOAD_API = 'http://127.0.0.1:8000/reports/submit/file_upload'   // Replace with your actual API URL
-const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replace with your actual API URL
+  const LIVE_CAPTURE_API = 'http://127.0.0.1:8000/reports/submit/live_capture'
+  const FILE_UPLOAD_API = 'http://127.0.0.1:8000/reports/submit/file_upload'
+  const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/'
 
   useEffect(() => {
     getCurrentLocation()
     // Set a default user ID - replace this with your actual auth logic
-    setUserId('550e8400-e29b-41d4-a716-446655440000') // Example UUID
+    setUserId('550e8400-e29b-41d4-a716-446655440000')
   }, [])
 
   // Cleanup camera stream on unmount
@@ -35,6 +37,7 @@ const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replac
     return () => {
       if (stream) {
         stream.getTracks().forEach(track => track.stop())
+        setStream(null)
       }
     }
   }, [stream])
@@ -55,6 +58,11 @@ const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replac
           console.error('Error getting location:', error)
           setLocation({ error: 'Unable to get location' })
           setIsLoadingLocation(false)
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 60000
         }
       )
     } else {
@@ -69,51 +77,183 @@ const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replac
     setCapturedImage(null) // Clear any captured image
   }
 
-  // Camera functions
+  // Enhanced camera functions
   const startCamera = async () => {
+    setIsLoadingCamera(true)
+    setCameraError(null)
+
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } // Use rear camera if available
-      })
+      // Check if MediaDevices API is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera API not supported in this browser')
+      }
+
+      // Stop any existing stream first
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop())
+        setStream(null)
+      }
+
+      // Try different camera constraints for better compatibility
+      const constraints = [
+        // First try: Environment camera (back camera)
+        { video: { facingMode: { exact: 'environment' } } },
+        // Fallback 1: Prefer environment camera
+        { video: { facingMode: 'environment' } },
+        // Fallback 2: Any camera with specific resolution
+        { video: { width: { ideal: 1280 }, height: { ideal: 720 } } },
+        // Fallback 3: Any available camera
+        { video: true }
+      ]
+
+      let mediaStream = null
+      let lastError = null
+
+      for (const constraint of constraints) {
+        try {
+          console.log('Trying camera constraint:', constraint)
+          mediaStream = await navigator.mediaDevices.getUserMedia(constraint)
+          console.log('Camera started successfully with constraint:', constraint)
+          break
+        } catch (error) {
+          console.warn('Failed with constraint:', constraint, error)
+          lastError = error
+        }
+      }
+
+      if (!mediaStream) {
+        throw lastError || new Error('Unable to access camera with any configuration')
+      }
+
       setStream(mediaStream)
+      
+      // Set up video element
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream
+        
+        // Wait for video to be ready
+        await new Promise((resolve, reject) => {
+          const video = videoRef.current
+          if (!video) {
+            reject(new Error('Video element not found'))
+            return
+          }
+
+          const handleLoadedMetadata = () => {
+            console.log('Video metadata loaded:', {
+              width: video.videoWidth,
+              height: video.videoHeight
+            })
+            video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+            resolve()
+          }
+
+          const handleError = (error) => {
+            video.removeEventListener('error', handleError)
+            reject(error)
+          }
+
+          video.addEventListener('loadedmetadata', handleLoadedMetadata)
+          video.addEventListener('error', handleError)
+
+          // Timeout after 10 seconds
+          setTimeout(() => {
+            video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+            video.removeEventListener('error', handleError)
+            reject(new Error('Video loading timeout'))
+          }, 10000)
+        })
       }
+
       setIsCameraActive(true)
+      console.log('Camera started successfully!')
+
     } catch (error) {
-      console.error('Error accessing camera:', error)
-      alert('Unable to access camera. Please check permissions.')
+      console.error('Camera error:', error)
+      
+      let errorMessage = 'Unable to access camera. '
+      
+      if (error.name === 'NotAllowedError') {
+        errorMessage += 'Please allow camera access and try again.'
+      } else if (error.name === 'NotFoundError') {
+        errorMessage += 'No camera found on this device.'
+      } else if (error.name === 'NotSupportedError') {
+        errorMessage += 'Camera not supported in this browser.'
+      } else if (error.name === 'NotReadableError') {
+        errorMessage += 'Camera is being used by another application.'
+      } else {
+        errorMessage += error.message || 'Please check your camera permissions.'
+      }
+      
+      setCameraError(errorMessage)
+      setIsCameraActive(false)
+    } finally {
+      setIsLoadingCamera(false)
     }
   }
 
   const stopCamera = () => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop())
+      stream.getTracks().forEach(track => {
+        console.log('Stopping track:', track.kind, track.label)
+        track.stop()
+      })
       setStream(null)
     }
+    
+    if (videoRef.current) {
+      videoRef.current.srcObject = null
+    }
+    
     setIsCameraActive(false)
+    setCameraError(null)
+    console.log('Camera stopped')
   }
 
   const capturePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current
-      const video = videoRef.current
-      const context = canvas.getContext('2d')
-      
+    if (!videoRef.current || !canvasRef.current) {
+      alert('Camera not ready. Please try again.')
+      return
+    }
+
+    const canvas = canvasRef.current
+    const video = videoRef.current
+    const context = canvas.getContext('2d')
+    
+    // Check if video has valid dimensions
+    if (video.videoWidth === 0 || video.videoHeight === 0) {
+      alert('Video not ready. Please wait a moment and try again.')
+      return
+    }
+    
+    try {
       // Set canvas dimensions to match video
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
       
+      console.log('Capturing photo with dimensions:', canvas.width, 'x', canvas.height)
+      
       // Draw video frame to canvas
       context.drawImage(video, 0, 0, canvas.width, canvas.height)
       
-      // Convert to base64
+      // Convert to base64 with good quality
       const base64Image = canvas.toDataURL('image/jpeg', 0.8)
+      
+      if (base64Image === 'data:,') {
+        throw new Error('Failed to capture image data')
+      }
+      
       setCapturedImage(base64Image)
       setSelectedFile(null) // Clear any selected file
       
-      // Stop camera
+      // Stop camera after successful capture
       stopCamera()
+      
+      console.log('Photo captured successfully!')
+      
+    } catch (error) {
+      console.error('Error capturing photo:', error)
+      alert('Failed to capture photo. Please try again.')
     }
   }
 
@@ -131,18 +271,17 @@ const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replac
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_email: `user-${userId}@example.com`, // You might want to use actual user email
+          user_email: `user-${userId}@example.com`,
           user_id: userId,
           latitude: latitude,
           longitude: longitude,
-          hazard_type: null // Optional, can be specified if needed
+          hazard_type: null
         }),
       })
 
       if (response.ok) {
         const hazardData = await response.json()
         console.log('Water hazards data:', hazardData)
-        // You can display this data to the user or store it in state
         return hazardData
       } else {
         console.error('Water hazards API failed:', response.statusText)
@@ -327,19 +466,50 @@ const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replac
                 Capture or Upload Evidence
               </label>
               
+              {/* Camera Error Display */}
+              {cameraError && (
+                <div 
+                  className="p-4 rounded-lg border"
+                  style={{
+                    background: 'rgba(255, 107, 107, 0.1)',
+                    borderColor: 'rgba(255, 107, 107, 0.3)',
+                    color: '#ff6b6b'
+                  }}
+                >
+                  <p className="text-sm">{cameraError}</p>
+                  <button
+                    type="button"
+                    onClick={() => setCameraError(null)}
+                    className="mt-2 text-xs underline hover:no-underline"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
+
               {/* Camera Controls */}
               {!isCameraActive && !capturedImage && (
                 <div className="flex space-x-4 mb-4">
                   <button
                     type="button"
                     onClick={startCamera}
-                    className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105"
+                    disabled={isLoadingCamera}
+                    className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
-                      background: 'linear-gradient(135deg, #34d4c0 0%, #13bdb8 100%)',
+                      background: isLoadingCamera ? 
+                        'linear-gradient(135deg, #666 0%, #888 100%)' :
+                        'linear-gradient(135deg, #34d4c0 0%, #13bdb8 100%)',
                       color: '#ffffff'
                     }}
                   >
-                    📷 Capture Live Photo
+                    {isLoadingCamera ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Starting Camera...</span>
+                      </div>
+                    ) : (
+                      '📷 Capture Live Photo'
+                    )}
                   </button>
                 </div>
               )}
@@ -351,7 +521,8 @@ const WATER_HAZARDS_API = 'http://127.0.0.1:8001/fetch_water_hazards/' // Replac
                     ref={videoRef}
                     autoPlay
                     playsInline
-                    className="w-full h-64 rounded-lg border border-opacity-30"
+                    muted
+                    className="w-full h-64 rounded-lg border border-opacity-30 bg-black"
                     style={{ borderColor: 'rgba(135, 206, 235, 0.5)' }}
                   />
                   <div className="flex space-x-4">
