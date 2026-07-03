@@ -115,6 +115,14 @@ async def startup_event():
     logger.info(f"Loading model from: {settings.MODEL_PATH}")
     try:
         model = tf.keras.models.load_model(settings.MODEL_PATH)
+        # The saved model's XLA JIT setting made a single-shot prediction on
+        # Render's free-tier CPU hang for minutes (JIT compile overhead only
+        # pays off across many repeated calls, not a one-off web request).
+        # Force plain eager execution instead.
+        try:
+            model.jit_compile = False
+        except Exception:
+            pass
         logger.info("Model loaded successfully!")
     except Exception as e:
         logger.error(f"CRITICAL ERROR: Model failed to load: {e}")
@@ -151,7 +159,10 @@ def process_and_predict(image_bytes: bytes) -> Dict[str, Any]:
             img_array = img_array[:, :, :3]
 
         img_batch = np.expand_dims(img_array, axis=0)
-        prediction_value = model.predict(img_batch, verbose=0)[0][0]
+        # Calling the model directly (vs. model.predict()) runs eagerly for a
+        # single batch instead of going through Keras's tf.function-traced
+        # predict loop, avoiding a slow first-call graph/XLA compile.
+        prediction_value = float(model(img_batch, training=False)[0][0])
 
         if prediction_value > settings.CONFIDENCE_THRESHOLD:
             return {"prediction": "Waterbody", "confidence": float(prediction_value)}
