@@ -1,0 +1,61 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Build output
+dist/
+build/
+out/
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Coverage
+coverage/
+
+# Misc
+*.local
+*.cache
+
+# Python
+venv/
+__pycache__/
+*.pyc
+uploads/
+
+# Vercel local project linking (machine-specific, not secret)
+.vercel/
+**/.vercel/
+
+# Next.js build directories
+.next/
+**/.next/
+
+# Client and Dashboard specific Next.js build directories
+client/.next/
+dashboard/.next/
+
+# Build output directories
+client/out/
+client/build/
+dashboard/out/
+dashboard/build/
