@@ -103,10 +103,12 @@ app.use(helmet({
   },
 }));
 
+const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
+  ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+  : ['http://localhost:3000', 'http://localhost:3001'];
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://oceanhazard.com', 'https://www.oceanhazard.com']
-    : ['http://localhost:3000', 'http://localhost:3001'],
+  origin: allowedOrigins,
   credentials: true,
 }));
 
